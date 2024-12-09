@@ -14,40 +14,57 @@ class ArticleSpiderPipeline:
         self.content_list = []
         self.text_list = []
         self.index_list = []
+        self.title_list = []
         self.parquet_output_dir = "/home/hdd/pythonPract/TheekkathirDataset/parquets/"
         self.txt_output_dir = "/home/hdd/pythonPract/TheekkathirDataset/texts/"
         os.makedirs(self.parquet_output_dir,exist_ok=True)
         os.makedirs(self.txt_output_dir,exist_ok=True)
 
     def process_item(self, item, spider):
-        if spider.name == "ArticleSpider":
+        if spider.name=="ArticleSpider":
             self.index_list.append(item["index"])
+            self.title_list.append(item["title"])
             self.text_list.append(item["full-text"])
             self.content_list.append(item["content"])
         return item
 
     def close_spider(self,spider):
-        df = pd.read_json("./TheekkathirDataset/extracted.json")
-        df = df.drop_duplicates(subset="இணைப்பு").reset_index(drop=True)
+        if spider.name == "ArticleSpider":
+            others = pd.read_json("./TheekkathirDataset/extracted.json")
+            states = pd.read_json("./TheekkathirDataset/states.json")
 
-        for index in self.index_list:
-            df.loc[index,"உள்ளடக்கம்"] = self.content_list[index]
+            df = pd.concat([others, states])
 
-        # saving parquet files
+            df = df.drop_duplicates(subset="இணைப்பு").reset_index(drop=True)
 
-        parquet_file_name = os.path.join(self.parquet_output_dir,f"{df["தேதி"][0]}.parquet")
-        df.to_parquet(parquet_file_name,compression="gzip",engine="pyarrow",index=False)
-        print(f"{df["தேதி"][0]}.parquet is saved under {self.parquet_output_dir}")
+            for index,content in zip(self.index_list,self.content_list):
+                df.loc[index,"உள்ளடக்கம்"] = content
 
-        # saving text files with dates as folders and titles as file name
+            # saving parquet files
 
-        text_file_directory = os.path.join(self.txt_output_dir,str(df["தேதி"][0]))
-        os.makedirs(text_file_directory,exist_ok=True)
-        os.chdir(text_file_directory)
+            df = df[["வெளியிட்ட தேதி","தலைப்பு","செய்தி-வகை","இணைப்பு","மொழி","குறிமுறைத் தரநிலை","உள்ளடக்கம்","சேகரிக்கப்பட்ட தேதி"]]
+            
+            parquet_file_name = os.path.join(self.parquet_output_dir,f"{df["வெளியிட்ட தேதி"][0]}.parquet")
+            df.to_parquet(parquet_file_name,compression="gzip",engine="pyarrow",index=False)
+            print(f"{df["வெளியிட்ட தேதி"][0]}.parquet is saved under {self.parquet_output_dir}")
 
-        for index in self.index_list:
-            text_filename = f"{df["தலைப்பு"][index]}.txt"
+            # saving text files with dates as folders and titles as file name
 
-            file = open(text_filename,"w")
-            file.write(self.text_list[index])
-            print(f"{df["தலைப்பு"][index]}.txt is saved under {text_file_directory}")
+            text_file_directory = os.path.join(self.txt_output_dir,str(df["வெளியிட்ட தேதி"][0]))
+            os.makedirs(text_file_directory,exist_ok=True)
+            os.chdir(text_file_directory)
+
+            inc = 0
+            for title in self.title_list:
+
+                title_length = len(title.split(' '))
+                if title_length > 6:
+                    title = " ".join(title.split(" ")[:5])
+                    title += f" - {df["வெளியிட்ட தேதி"][0]}"
+
+                text_filename = f"{title}.txt"
+
+                file = open(text_filename,"w",encoding="utf-8")
+                file.write(self.text_list[inc])
+                inc += 1
+                print(f"{title}.txt is saved under {text_file_directory}")
