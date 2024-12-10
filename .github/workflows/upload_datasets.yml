@@ -9,6 +9,8 @@ on:
 #   schedule: 
 #     - cron: '30 1 * * *'
 
+env:
+  HF_TOKEN: ${{ secrets.HF_TOKEN }}
 
 jobs:
   run_job:
