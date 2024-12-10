@@ -37,6 +37,7 @@ class ArticlespiderSpider(scrapy.Spider):
         full_text += f"தலைப்பு: {self.dataset["தலைப்பு"][index]}\n"
         full_text += f"தேதி: {self.dataset["வெளியிட்ட தேதி"][index]}\n"
         full_text += f"செய்தி வகை: {self.dataset["செய்தி-வகை"][index]}\n"
+        full_text += f"எழுத்தாளர்: {self.dataset["எழுத்தாளர்"][index]}\n"
         full_text += f"இணைப்பு: {self.dataset["இணைப்பு"][index]}\n\n"
         
         for data in data_scrape:

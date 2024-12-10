@@ -42,12 +42,14 @@ class TheekkathirspiderSpider(scrapy.Spider):
 
         titles_scrape = response.css("div.ArticleList h1.zm-post-title")
         dates_scrape = response.css("div.ArticleList a.zm-date")
+        author_scrape = response.css("div.ArticleList a.zm-author")
 
-        for titles,dates in zip(titles_scrape,dates_scrape):
+        for titles,dates,authors in zip(titles_scrape,dates_scrape,author_scrape):
             dt_now = datetime.now()
             yesterday = dt_now - timedelta(days=1)
             yesterday = yesterday.replace(hour=0,minute=0,second=0,microsecond=0)
             date = dates.css("::text").get()
+            author = authors.css("::text").get()
             dt_convert = tamildate_to_date_converter(date)
             print(yesterday,dt_convert)
             if dt_convert == yesterday:
@@ -59,6 +61,7 @@ class TheekkathirspiderSpider(scrapy.Spider):
                             "வெளியிட்ட தேதி":date,
                             "தலைப்பு":title,
                             "செய்தி-வகை":self.categories[response.meta.get("category")],
+                            "எழுத்தாளர்": author,
                             "இணைப்பு":url,
                             "மொழி":"தமிழ்",
                             "குறிமுறைத் தரநிலை":"UTF-8",

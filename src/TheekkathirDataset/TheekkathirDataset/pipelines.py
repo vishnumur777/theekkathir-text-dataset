@@ -42,7 +42,7 @@ class ArticleSpiderPipeline:
 
             # saving parquet files
 
-            df = df[["வெளியிட்ட தேதி","தலைப்பு","செய்தி-வகை","இணைப்பு","மொழி","குறிமுறைத் தரநிலை","உள்ளடக்கம்","சேகரிக்கப்பட்ட தேதி"]]
+            df = df[["வெளியிட்ட தேதி","தலைப்பு","செய்தி-வகை","எழுத்தாளர்","இணைப்பு","மொழி","குறிமுறைத் தரநிலை","உள்ளடக்கம்","சேகரிக்கப்பட்ட தேதி"]]
             
             parquet_file_name = os.path.join(self.parquet_output_dir,f"{df["வெளியிட்ட தேதி"][0]}.parquet")
             df.to_parquet(parquet_file_name,compression="gzip",engine="pyarrow",index=False)

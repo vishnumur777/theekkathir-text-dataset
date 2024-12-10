@@ -67,10 +67,11 @@ class StatearticlespiderSpider(scrapy.Spider):
         titles_scrape = response.css("article.zm-single-post h1.zm-post-title")
         dates_scrape = response.css("article.zm-single-post div.zm-post-meta a.zm-date")
         category_scrape = response.css("article.zm-single-post div.zm-category a.cat-btn")
+        author_scrape = response.css("article.zm-single-post div.zm-post-meta a.zm-author")
 
         dt_convert: datetime
         yesterday: datetime
-        for titles,dates,category in zip(titles_scrape,dates_scrape,category_scrape):
+        for titles,dates,category,authors in zip(titles_scrape,dates_scrape,category_scrape,author_scrape):
             dt_now = datetime.now()
             yesterday = dt_now - timedelta(days=1)
             yesterday = yesterday.replace(hour=0,minute=0,second=0,microsecond=0)
@@ -81,11 +82,13 @@ class StatearticlespiderSpider(scrapy.Spider):
                 title = titles.css("a::text").get().strip()
                 url = titles.css("a::attr(href)").get()
                 state = category.css("::text").get()
+                author = authors.css("::text").get()
 
                 result_data = {
                             "வெளியிட்ட தேதி":date,
                             "தலைப்பு":title,
                             "செய்தி-வகை":f"மாநிலம் - {self.state_validation(state)}",
+                            "எழுத்தாளர்": author,
                             "இணைப்பு":url,
                             "மொழி":"தமிழ்",
                             "குறிமுறைத் தரநிலை":"UTF-8",
@@ -97,7 +100,7 @@ class StatearticlespiderSpider(scrapy.Spider):
             elif dt_convert < yesterday:
                 break
 
-        if dt_convert >= yesterday:
+        if dt_convert is not None and yesterday is not None and dt_convert >= yesterday:
             self.page_number += 1
             next_page_url = f"{self.url}{self.page_number}"
             yield scrapy.Request(url=next_page_url,callback=self.parse)
