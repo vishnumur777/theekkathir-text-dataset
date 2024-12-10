@@ -16,7 +16,7 @@ yesterday = yesterday.replace(hour=0,minute=0,second=0, microsecond=0)
 
 yesterday_tamildate = date_to_tamildate_converter(yesterday)
 
-files_to_upload = [f"/home/hdd/pythonPract/TheekkathirDataset/parquets/{yesterday_tamildate}.parquet",f"/home/hdd/pythonPract/TheekkathirDataset/texts/{yesterday_tamildate}/"]
+files_to_upload = [f"/home/TheekkathirDataset/parquets/{yesterday_tamildate}.parquet",f"/home/TheekkathirDataset/texts/{yesterday_tamildate}/"]
 
 
 api.upload_file(
