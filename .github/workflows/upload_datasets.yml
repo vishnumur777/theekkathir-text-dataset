@@ -22,10 +22,17 @@ jobs:
         with:
           python-version: 3.13
 
-      - name: list directories
+      - name: set permissions and list directories
         run: |
-          pwd
+          mkdir /home/TheekkathirDataset/parquets/
+          mkdir /home/TheekkathirDataset/texts/
+          chmod +rwx /home/TheekkathirDataset/parquets/
+          chmod +rwx /home/TheekkathirDataset/texts/
+          chown $USER:$USER /home/TheekkathirDataset/parquets/
+          chown $USER:$USER /home/TheekkathirDataset/texts/
           ls -alh
+          ls -alh /home/TheekkathirDataset/
+          
       - name: Cache dependencies
         uses: actions/cache@v2
         with:
