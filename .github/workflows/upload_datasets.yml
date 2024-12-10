@@ -1,14 +1,9 @@
 name: Dataset Conversion
-
-on:
-  push:
-    branches:
-      - dev
   
-# on:
-#   schedule: 
-#     - cron: '30 1 * * *'
-
+on:
+  schedule:
+    - cron: '0 6 * * *'
+    
 env:
   HF_TOKEN: ${{ secrets.HF_TOKEN }}
 
@@ -22,7 +17,7 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13
+          python-version: 3.13.1
 
       - name: set permissions and list directories
         run: |
