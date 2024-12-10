@@ -22,10 +22,15 @@ jobs:
         with:
           python-version: 3.13
 
-      - name: Install requirements.txt
-        run: pip install -r requirements.txt
+      - name: list directories
+        uses: |
+          pwd
+          ls -alh
 
-      - name: Run dataset pipeline
-        run: |
-          cd src/TheekkathirDataset
-          ./run_pipeline.sh
+      # - name: Install requirements.txt
+      #   run: pip install -r requirements.txt
+
+      # - name: Run dataset pipeline
+      #   run: |
+      #     cd src/TheekkathirDataset
+      #     ./run_pipeline.sh
