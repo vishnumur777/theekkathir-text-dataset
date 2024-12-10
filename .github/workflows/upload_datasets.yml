@@ -22,14 +22,6 @@ jobs:
         with:
           python-version: 3.13
 
-      - name: Install uv package manager
-        run: curl -LsSf https://astral.sh/uv/install.sh | sh
-
-      - name: create virtual environment
-        run: |
-          uv venv theekkathir
-          source ./theekkathir/bin/activate
-
       - name: Install requirements.txt
         run: uv pip install -r requirements.txt
 
