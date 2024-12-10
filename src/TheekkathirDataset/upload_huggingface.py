@@ -6,7 +6,12 @@ from tamil_date_converter.tamil_date_converter import date_to_tamildate_converte
 
 load_dotenv()
 
-login(token=os.getenv("HF_TOKEN"))
+token = os.getenv("HF_TOKEN")
+if token is None:
+    raise ValueError("HF_TOKEN environment variable is not set")
+
+# Use the token directly without prompting
+HfApi().set_access_token(token)
 
 api = HfApi()
 
