@@ -23,7 +23,7 @@ jobs:
           python-version: 3.13
 
       - name: Install requirements.txt
-        run: uv pip install -r requirements.txt
+        run: pip install -r requirements.txt
 
       - name: Run dataset pipeline
         run: |
