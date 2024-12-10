@@ -28,7 +28,7 @@ jobs:
           ls -alh
 
       - name: Install requirements.txt
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.txt --user
 
       - name: Run dataset pipeline
         run: |
