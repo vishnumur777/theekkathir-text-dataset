@@ -15,8 +15,8 @@ class ArticleSpiderPipeline:
         self.text_list = []
         self.index_list = []
         self.title_list = []
-        self.parquet_output_dir = "/home/hdd/pythonPract/TheekkathirDataset/parquets/"
-        self.txt_output_dir = "/home/hdd/pythonPract/TheekkathirDataset/texts/"
+        self.parquet_output_dir = "/home/TheekkathirDataset/parquets/"
+        self.txt_output_dir = "/home/TheekkathirDataset/texts/"
         os.makedirs(self.parquet_output_dir,exist_ok=True)
         os.makedirs(self.txt_output_dir,exist_ok=True)
 
