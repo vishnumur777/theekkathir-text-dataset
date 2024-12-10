@@ -28,7 +28,7 @@ jobs:
       - name: create virtual environment
         run: |
           uv venv theekkathir
-          source theekkathir/bin/activate
+          source ./theekkathir/bin/activate
 
       - name: Install requirements.txt
         run: uv pip install -r requirements.txt
