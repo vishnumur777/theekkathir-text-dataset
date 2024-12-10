@@ -23,7 +23,7 @@ jobs:
           python-version: 3.13
 
       - name: list directories
-        uses: |
+        run: |
           pwd
           ls -alh
 
