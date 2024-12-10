@@ -24,8 +24,8 @@ jobs:
 
       - name: set permissions and list directories
         run: |
-          sudo mkdir /home/TheekkathirDataset/parquets/
-          sudo mkdir /home/TheekkathirDataset/texts/
+          sudo mkdir -p /home/TheekkathirDataset/parquets/
+          sudo mkdir -p /home/TheekkathirDataset/texts/
           sudo chmod +rwx /home/TheekkathirDataset/parquets/
           sudo chmod +rwx /home/TheekkathirDataset/texts/
           sudo chown $USER:$USER /home/TheekkathirDataset/parquets/
