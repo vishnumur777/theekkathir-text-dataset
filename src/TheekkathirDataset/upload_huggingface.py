@@ -10,10 +10,7 @@ token = os.getenv("HF_TOKEN")
 if token is None:
     raise ValueError("HF_TOKEN environment variable is not set")
 
-# Use the token directly without prompting
-HfApi().set_access_token(token)
-
-api = HfApi()
+api = HfApi(token=token)
 
 dt_now = datetime.now()
 yesterday = dt_now - timedelta(days=1)
