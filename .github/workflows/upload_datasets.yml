@@ -24,12 +24,12 @@ jobs:
 
       - name: set permissions and list directories
         run: |
-          mkdir /home/TheekkathirDataset/parquets/
-          mkdir /home/TheekkathirDataset/texts/
-          chmod +rwx /home/TheekkathirDataset/parquets/
-          chmod +rwx /home/TheekkathirDataset/texts/
-          chown $USER:$USER /home/TheekkathirDataset/parquets/
-          chown $USER:$USER /home/TheekkathirDataset/texts/
+          sudo mkdir /home/TheekkathirDataset/parquets/
+          sudo mkdir /home/TheekkathirDataset/texts/
+          sudo chmod +rwx /home/TheekkathirDataset/parquets/
+          sudo chmod +rwx /home/TheekkathirDataset/texts/
+          sudo chown $USER:$USER /home/TheekkathirDataset/parquets/
+          sudo chown $USER:$USER /home/TheekkathirDataset/texts/
           ls -alh
           ls -alh /home/TheekkathirDataset/
           
