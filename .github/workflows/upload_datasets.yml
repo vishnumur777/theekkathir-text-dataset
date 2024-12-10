@@ -1,8 +1,13 @@
 name: Dataset Conversion
 
 on:
-  schedule: 
-    - cron: '30 1 * * *'
+  push:
+    branches:
+      - dev
+  
+# on:
+#   schedule: 
+#     - cron: '30 1 * * *'
 
 
 jobs:
