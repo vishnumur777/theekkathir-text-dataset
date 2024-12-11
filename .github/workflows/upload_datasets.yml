@@ -2,7 +2,7 @@ name: Dataset Conversion
   
 on:
   schedule:
-    - cron: '45 2 * * *'
+    - cron: '0 9 * * *'
     
 env:
   HF_TOKEN: ${{ secrets.HF_TOKEN }}
