@@ -20,7 +20,7 @@
 </p>
 </a>
 
-<h2 align="center">Click above to view datasets</h2>
+<h2 align="center">Click above button to view datasets</h2>
 
 <h3>இலக்கு:</h3>
 
