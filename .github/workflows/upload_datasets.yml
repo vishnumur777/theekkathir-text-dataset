@@ -1,13 +1,8 @@
 name: Dataset Conversion
-  
 on:
   schedule:
-    - cron: "30 9 * * *"
-  workflow_dispatch:
-    
-env:
-  HF_TOKEN: ${{ secrets.HF_TOKEN }}
-
+    - cron: "30 12 * * *"
+  workflow_dispatch: 
 jobs:
   run_job:
     runs-on: ubuntu-latest
@@ -46,6 +41,8 @@ jobs:
           pip install -r requirements.txt
           
       - name: Run dataset pipeline
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           cd src/TheekkathirDataset
           ./run_pipeline.sh
