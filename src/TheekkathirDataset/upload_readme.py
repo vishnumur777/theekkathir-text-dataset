@@ -45,6 +45,7 @@ if current_readme == readme1:
         commit_message="Update README.md",
         repo_type="dataset"
     )
+    print("README.md 1 has updated")
 
 elif current_readme == readme2:
     api.upload_file(
@@ -54,5 +55,6 @@ elif current_readme == readme2:
         commit_message="Update README.md",
         repo_type="dataset"
     )
+    print("README.md 2 has updated")
 else:
-    exit(0)
+    print("No README.md were matched.")
