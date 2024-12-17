@@ -15,7 +15,7 @@ local_log_path = "/home/TheekkathirDataset/value.log"
 log_value = requests.get(log_path)
 log_value = log_value.text
 
-if log_value == 1:
+if log_value == "1":
     api.upload_file(
         path_or_fileobj=readme2_path,
         path_in_repo="aiwithvarun7/theekkathir-text-dataset/README.md",
@@ -28,7 +28,7 @@ if log_value == 1:
     with open(local_log_value, "w") as file:
         file.write("2")
 
-elif log_value == 2:
+elif log_value == "2":
     api.upload_file(
         path_or_fileobj=readme1_path,
         path_in_repo="aiwithvarun7/theekkathir-text-dataset/README.md",
