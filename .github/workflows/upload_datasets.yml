@@ -39,6 +39,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
+      - name: Check Date and Time log
+        run: date
           
       - name: Run dataset pipeline
         env:
