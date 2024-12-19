@@ -25,7 +25,7 @@ if log_value == "1":
     )
     print("README.md 1 has updated")
     
-    with open(local_log_value, "w") as file:
+    with open(local_log_path, "w") as file:
         file.write("2")
 
 elif log_value == "2":
