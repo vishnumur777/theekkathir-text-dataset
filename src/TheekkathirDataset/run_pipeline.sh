@@ -9,3 +9,5 @@ scrapy crawl StateArticleSpider -o TheekkathirDataset/states.json
 scrapy crawl ArticleSpider
 
 python3 upload_huggingface.py
+
+python3 upload_readme.py
