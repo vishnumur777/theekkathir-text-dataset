@@ -18,7 +18,7 @@ log_value = log_value.text
 if log_value == "1":
     api.upload_file(
         path_or_fileobj=readme2_path,
-        path_in_repo="aiwithvarun7/theekkathir-text-dataset/README.md",
+        path_in_repo="README.md",
         repo_id="aiwithvarun7/theekkathir-text-dataset",
         commit_message="Update README.md",
         repo_type="dataset"
