@@ -46,7 +46,7 @@ else:
 
 api.upload_file(
         path_or_fileobj=local_log_path,
-        path_in_repo="aiwithvarun7/theekkathir-text-dataset/value.log",
+        path_in_repo="value.log",
         repo_id="aiwithvarun7/theekkathir-text-dataset",
         commit_message="Update log",
         repo_type="dataset"
