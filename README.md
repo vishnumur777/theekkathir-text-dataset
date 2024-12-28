@@ -6,7 +6,8 @@
 ---
 
 <p align="center">
-    <img src="https://github.com/vishnumur777/theekkathir-text-dataset/actions/workflows/upload_datasets.yml/badge.svg" alt="example workflow">
+    <img src="https://github.com/vishnumur777/theekkathir-text-dataset/actions/workflows/upload_datasets.yml/badge.svg" alt="Dataset Converter workflow">
+    <img src="https://github.com/vishnumur777/theekkathir-text-dataset/actions/workflows/monthly_merger.yml/badge.svg" alt="Monthly merger workflow">
     <img src="https://img.shields.io/github/license/vishnumur777/theekkathir-text-dataset" alt="License">
     <img src="https://img.shields.io/github/forks/vishnumur777/theekkathir-text-dataset" alt="GitHub forks">
     <img src="https://img.shields.io/github/stars/vishnumur777/theekkathir-text-dataset" alt="GitHub Repo stars">

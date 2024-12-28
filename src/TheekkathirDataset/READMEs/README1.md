@@ -22,7 +22,7 @@ dataset_info:
       dtype: string
 configs:
   - config_name: sample parquets
-    data_files: TheekkathirDataset/parquets/டிசம்பர்*
+    data_files: TheekkathirDataset/parquets/*.parquet
     
 language:
 - ta
