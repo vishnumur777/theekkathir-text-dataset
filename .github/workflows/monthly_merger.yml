@@ -1,11 +1,11 @@
-name: Dataset Conversion
+name: Monthly Merger
 on:
   schedule:
-    - cron: "30 0 * * *"
+    - cron: "30 6 1 * *"
   workflow_dispatch: 
 jobs:
   run_job:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -13,21 +13,20 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13.1
+          python-version: 3.13.0
 
       - name: set permissions and list directories
         run: |
-          sudo mkdir -p /home/TheekkathirDataset/parquets/
-          sudo mkdir -p /home/TheekkathirDataset/texts/
+          sudo mkdir -p /home/TheekkathirDataset/parquets/outputs/
           sudo touch /home/TheekkathirDataset/value.log
           sudo chmod +rwx /home/TheekkathirDataset/parquets/
-          sudo chmod +rwx /home/TheekkathirDataset/texts/
+          sudo chmod +rwx /home/TheekkathirDataset/parquets/outputs/
           sudo chmod +rwx /home/TheekkathirDataset/value.log
           sudo chown $USER:$USER /home/TheekkathirDataset/value.log
           sudo chown $USER:$USER /home/TheekkathirDataset/parquets/
-          sudo chown $USER:$USER /home/TheekkathirDataset/texts/
-          ls -alh
-          ls -alh /home/TheekkathirDataset/
+          sudo chown $USER:$USER /home/TheekkathirDataset/parquets/outputs/
+          ls -alh /home/TheekkathirDataset/parquets/
+          ls -alh /home/TheekkathirDataset/parquets/outputs/
           
       - name: Cache dependencies
         uses: actions/cache@v4
@@ -51,8 +50,16 @@ jobs:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           cd src/TheekkathirDataset
-          ./run_pipeline.sh
+          python3 monthly_merger.py
+
+      # - name: Delete 30 days parquets in a month
+      #   env:
+      #     HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      #   run: |
+      #     cd src/TheekkathirDataset
+      #     python3 dayfiles_delete.py
 
       - name: Delete all local files
         run: |
           rm -rf /home/TheekkathirDataset/*
+

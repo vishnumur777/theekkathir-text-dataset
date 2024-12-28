@@ -22,7 +22,7 @@ dataset_info:
       dtype: string
 configs:
   - config_name: sample parquets
-    data_files: TheekkathirDataset/parquets/டிசம்பர் *
+    data_files: TheekkathirDataset/parquets/*.parquet
     
 language:
 - ta
@@ -86,3 +86,5 @@ If you want to contribute to this project, Contact me via [LinkedIn](https://lin
 - சாத்தியமானால், CONTRIBUTING.md எழுதி இங்கு Pull Request செய்யவும்.
 - விரிவான ஆவணங்களுக்காக [Medium](https://medium.com/@VARUNMURALIDHAR) பின்தொடரவும். நான் எந்தவொரு பங்களிப்பையும் புதுப்பிக்கிறேன்.
 - சாத்தியமானால், பிரச்சினைகளையும் PR (Pull Request) யையும் உயர்த்தவும்.
+
+
