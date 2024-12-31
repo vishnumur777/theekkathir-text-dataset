@@ -53,12 +53,17 @@ jobs:
           cd src/TheekkathirDataset
           python3 parquet_merger.py
 
-      # - name: Delete 30 days parquets in a month
-      #   env:
-      #     HF_TOKEN: ${{ secrets.HF_TOKEN }}
-      #   run: |
-      #     cd src/TheekkathirDataset
-      #     python3 dayfiles_delete.py
+      - name: Delete 30 days parquets in a month
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          cd src/TheekkathirDataset
+          python3 dayfiles_delete.py
+
+      - name: README.md file upload
+        run: |
+          cd src/TheekkathirDataset
+          python3 upload_readme.py
 
       - name: Delete all local files
         run: |
