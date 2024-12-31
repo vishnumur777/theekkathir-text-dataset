@@ -25,6 +25,7 @@ jobs:
           sudo chown $USER:$USER /home/TheekkathirDataset/value.log
           sudo chown $USER:$USER /home/TheekkathirDataset/parquets/
           sudo chown $USER:$USER /home/TheekkathirDataset/parquets/outputs/
+          ls -alh
           ls -alh /home/TheekkathirDataset/parquets/
           ls -alh /home/TheekkathirDataset/parquets/outputs/
           
@@ -45,12 +46,12 @@ jobs:
       - name: Check Date and Time log
         run: TZ="Asia/Kolkata" date
           
-      - name: Run dataset pipeline
+      - name: Merge parquet files for 30 days to single month parquet file
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           cd src/TheekkathirDataset
-          python3 monthly_merger.py
+          python3 parquet_merger.py
 
       # - name: Delete 30 days parquets in a month
       #   env:
