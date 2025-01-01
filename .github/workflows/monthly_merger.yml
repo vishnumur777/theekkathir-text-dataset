@@ -61,6 +61,8 @@ jobs:
           python3 dayfiles_delete.py
 
       - name: README.md file upload
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           cd src/TheekkathirDataset
           python3 upload_readme.py
