@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os
 from datetime import datetime, timedelta
 from tamil_date_converter.tamil_date_converter import date_to_tamildate_converter
-
+import re
 
 load_dotenv()
 token = os.getenv("HF_TOKEN")
@@ -26,7 +26,8 @@ yesterday_year = yesterday_list[2]
 repo_id = "aiwithvarun7/theekkathir-text-dataset"
 files = fs.glob(f"datasets/{repo_id}/TheekkathirDataset/parquets/{yesterday_month}*.parquet")
 commit = "Deleted all 30 days files in a month."
-for path in files:
+for full_path in files:
+    path = re.sub(r'datasets/aiwithvarun7/theekkathir-text-dataset/', '', full_path)
     print(f"Deleting {path}...")
     api.delete_file(repo_id=repo_id, path_in_repo=path, commit_message=commit, repo_type="dataset")
     print(f"{path} deleted successfully.")
