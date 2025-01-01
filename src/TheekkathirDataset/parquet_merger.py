@@ -50,11 +50,3 @@ for file in files:
 local_paths.sort(reverse=False, key= lambda dates: int(re.findall(r'\d+', dates)[1]))
 
 merge_and_save_parquets(local_paths)
-
-api.upload_file(
-    path_in_repo=f"TheekkathirDataset/parquets/{yesterday_month} - {yesterday_year}.parquet",
-    repo_id=repo_id,
-    path_or_fileobj=f"/home/TheekkathirDataset/parquets/outputs/{yesterday_month} - {yesterday_year}.parquet",
-    repo_type="dataset",
-    commit_message=f"Upload Parquet for {yesterday_tamildate}"
-)
