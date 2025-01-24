@@ -1,4 +1,3 @@
-from huggingface_hub import HfApi
 from huggingface_hub import HfFileSystem
 from huggingface_hub import hf_hub_download
 from dotenv import load_dotenv
@@ -14,6 +13,7 @@ def merge_and_save_parquets(local_paths: list[str]) -> None:
         df = pd.read_parquet(path)
         df = df.dropna(subset=["உள்ளடக்கம்"])
         merged_dataframe = pd.concat([merged_dataframe, df])
+        merged_dataframe.sort_values(by="சேகரிக்கப்பட்ட தேதி",inplace=True)
     merged_dataframe.to_parquet(f"/home/TheekkathirDataset/parquets/outputs/{yesterday_month} - {yesterday_year}.parquet",index=False)
     print(f"{yesterday_month} - {yesterday_year}.parquet saved successfully to /home/TheekkathirDataset/parquets/outputs/")
 
@@ -22,7 +22,6 @@ token = os.environ.get('HF_TOKEN')
 if token is None:
     raise ValueError("HF_TOKEN environment variable is not set")
 
-api = HfApi(token=token)
 fs = HfFileSystem(token=token)
 
 
@@ -46,7 +45,5 @@ for file in files:
     local_path = hf_hub_download(repo_id=repo_id, filename=path, repo_type="dataset", revision="main",local_dir="/home/TheekkathirDataset/parquets/")
     local_paths.append(local_path)
     print(local_path)
-
-local_paths.sort(reverse=False, key= lambda dates: int(re.findall(r'\d+', dates)[1]))
 
 merge_and_save_parquets(local_paths)
