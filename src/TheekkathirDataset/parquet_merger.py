@@ -35,7 +35,7 @@ yesterday_month = yesterday_list[0]
 yesterday_year = yesterday_list[2]
 
 repo_id = "aiwithvarun7/theekkathir-text-dataset"
-files = fs.glob(f"datasets/{repo_id}/TheekkathirDataset/parquets/{yesterday_month}*.parquet")
+files = fs.glob(f"datasets/{repo_id}/TheekkathirDataset/parquets/{yesterday_month}*{yesterday_year}.parquet")
 
 local_paths = []
 
