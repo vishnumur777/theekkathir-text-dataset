@@ -1,4 +1,5 @@
 import scrapy
+import sys
 import pandas as pd
 
 
@@ -26,6 +27,17 @@ class ArticlespiderSpider(scrapy.Spider):
         for url in self.urls:
             index = self.get_index_from_url(self.urls,url)
             yield scrapy.Request(url=url,callback=self.parse,meta={"index":index},dont_filter=True)
+
+    def handle_error(self, failure):
+        response = failure.value.response
+        if response and response.status == 404:
+            self.logger.error(f"Page not found: {response.url}")
+            sys.exit(1)
+        elif response and response.status == 500:
+            self.logger.error(f"Internal server error at: {response.url}")
+            sys.exit(1)
+        else:
+            self.logger.error(f"Request failed: {failure}")
 
     def parse(self, response):
 
