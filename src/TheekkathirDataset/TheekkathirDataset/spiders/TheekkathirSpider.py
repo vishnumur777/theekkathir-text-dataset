@@ -1,4 +1,5 @@
 import scrapy
+import sys
 from datetime import datetime, timedelta
 from tamil_date_converter.tamil_date_converter import tamildate_to_date_converter
 
@@ -12,7 +13,9 @@ class TheekkathirspiderSpider(scrapy.Spider):
         "https://theekkathir.in/News/politics/":{"category":"politics"},
         "https://theekkathir.in/News/india/":{"category":"india"},
         "https://theekkathir.in/News/world/":{"category":"world"},
-        "https://theekkathir.in/News/economics/":{"category":"economics"}}
+        "https://theekkathir.in/News/economics/":{"category":"economics"},
+        "https://theekkathir.in/News/science/":{"category":"science"},
+        "https://theekkathir.in/News/technology":{"category":"technology"}}
 
     def __init__(self):
         self.categories = {
@@ -23,6 +26,8 @@ class TheekkathirspiderSpider(scrapy.Spider):
             "politics":"அரசியல்",
             "games": "விளையாட்டு",
             "economics": "பொருளாதாரம்",
+            "science": "அறிவியல்",
+            "technology": "தொழில்நுட்பம்",
             "state": "மாநிலம் - "
         }
 
@@ -37,6 +42,17 @@ class TheekkathirspiderSpider(scrapy.Spider):
     def start_requests(self):
         for url,metadata in self.start_urls_with_metadata.items():
             yield scrapy.Request(url=url,callback=self.parse,meta=metadata)
+
+    def handle_error(self, failure):
+        response = failure.value.response
+        if response and response.status == 404:
+            self.logger.error(f"Page not found: {response.url}")
+            sys.exit(1)
+        elif response and response.status == 500:
+            self.logger.error(f"Internal server error at: {response.url}")
+            sys.exit(1)
+        else:
+            self.logger.error(f"Request failed: {failure}")
 
     def parse(self, response):
 

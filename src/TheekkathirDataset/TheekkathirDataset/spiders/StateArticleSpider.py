@@ -1,4 +1,5 @@
 import scrapy
+import sys
 from tamil_date_converter.tamil_date_converter import tamildate_to_date_converter
 from datetime import datetime, timedelta
 
@@ -53,6 +54,17 @@ class StatearticlespiderSpider(scrapy.Spider):
         url_with_page = f"{self.url}{self.page_number}"
         yield scrapy.Request(url=url_with_page,callback=self.parse)
 
+    def handle_error(self, failure):
+        response = failure.value.response
+        if response and response.status == 404:
+            self.logger.error(f"Page not found: {response.url}")
+            sys.exit(1)
+        elif response and response.status == 500:
+            self.logger.error(f"Internal server error at: {response.url}")
+            sys.exit(1)
+        else:
+            self.logger.error(f"Request failed: {failure}")
+    
     def state_validation(self,states):
         if states in self.states_category:
             return self.states_category[states]
