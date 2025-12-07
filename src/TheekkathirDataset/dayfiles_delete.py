@@ -15,8 +15,11 @@ api = HfApi(token=token)
 fs = HfFileSystem(token=token)
 
 dt_now = datetime.now()
+if dt_now.day > 1:
+    dt_now = dt_now.replace(day=1)
 yesterday = dt_now - timedelta(days=1)
 yesterday = yesterday.replace(hour=0,minute=0,second=0, microsecond=0)
+
 
 yesterday_tamildate = date_to_tamildate_converter(yesterday)
 yesterday_list = yesterday_tamildate.split(" ")
