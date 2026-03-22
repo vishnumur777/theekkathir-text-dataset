@@ -1,0 +1,32 @@
+name: Increment Action Beat
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'  # Runs at 00:00 UTC on the 1st of every month
+  workflow_dispatch:     # Optional: allows manual trigger
+
+jobs:
+  update-beat:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Read, increment, and update .action_beat
+        run: |
+          if [ ! -f .action_beat ]; then
+            echo "1" > .action_beat
+          else
+            value=$(cat .action_beat)
+            new_value=$((value + 1))
+            echo $new_value > .action_beat
+          fi
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .action_beat
+          git commit -m "Increment .action_beat"
+          git push
