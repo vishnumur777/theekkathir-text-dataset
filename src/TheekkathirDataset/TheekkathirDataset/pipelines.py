@@ -31,11 +31,10 @@ class ArticleSpiderPipeline:
     def close_spider(self,spider):
         if spider.name == "ArticleSpider":
             others = pd.read_json("./TheekkathirDataset/extracted.json")
-            states = pd.read_json("./TheekkathirDataset/states.json")
+            # states = pd.read_json("./TheekkathirDataset/states.json")
 
-            df = pd.concat([others, states])
 
-            df = df.drop_duplicates(subset="இணைப்பு").reset_index(drop=True)
+            df = others.drop_duplicates(subset="இணைப்பு").reset_index(drop=True)
 
             for index,content in zip(self.index_list,self.content_list):
                 df.loc[index,"உள்ளடக்கம்"] = content
