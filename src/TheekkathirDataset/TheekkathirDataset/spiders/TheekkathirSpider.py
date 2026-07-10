@@ -30,7 +30,7 @@ class TheekkathirspiderSpider(scrapy.Spider):
             "economics": "பொருளாதாரம்",
             "science": "அறிவியல்",
             "technology": "தொழில்நுட்பம்",
-            "state": "மாநிலங்கள்",
+            "states": "மாநிலங்கள்",
         }
 
     def tamildate_convert(self, yesterday_date):
