@@ -1,5 +1,5 @@
 ---
-license: cc-by-nc-4.0
+license: cc-by-sa-4.0
 dataset_info:
   features:
     - name: தேதி
