@@ -2,14 +2,14 @@ name: Monthly Merger
 on:
   schedule:
     - cron: "30 6 1 * *"
-  workflow_dispatch: 
+  workflow_dispatch:
 jobs:
   run_job:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-       
+
       - name: Setup python
         uses: actions/setup-python@v5
         with:
@@ -28,7 +28,7 @@ jobs:
           ls -alh
           ls -alh /home/TheekkathirDataset/parquets/
           ls -alh /home/TheekkathirDataset/parquets/outputs/
-          
+
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
@@ -45,18 +45,19 @@ jobs:
 
       - name: Check Date and Time log
         run: TZ="Asia/Kolkata" date
-          
+
       - name: Merge parquet files for 30 days to single month parquet file
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           cd src/TheekkathirDataset
           python3 parquet_merger.py
-          - name: Clean Tamil text (fix broken words, remove control chars & English words)
-          env:
-            HF_TOKEN: ${{ secrets.HF_TOKEN }}
-          run: |
-            cd src/TheekkathirDataset
+
+      - name: Clean Tamil text (fix broken words, remove control chars & English words)
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          cd src/TheekkathirDataset
           python3 load_dictionary.py
 
       - name: Delete 30 days parquets in a month
@@ -71,9 +72,3 @@ jobs:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           cd src/TheekkathirDataset
-          python3 upload_readme.py
-
-      - name: Delete all local files
-        run: |
-          rm -rf /home/TheekkathirDataset/*
-
