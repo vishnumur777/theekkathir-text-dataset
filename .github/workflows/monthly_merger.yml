@@ -72,3 +72,8 @@ jobs:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           cd src/TheekkathirDataset
+          python3 upload_readme.py
+
+      - name: Delete all local files
+        run: |
+          rm -rf /home/TheekkathirDataset/*
