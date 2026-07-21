@@ -52,6 +52,12 @@ jobs:
         run: |
           cd src/TheekkathirDataset
           python3 parquet_merger.py
+          - name: Clean Tamil text (fix broken words, remove control chars & English words)
+          env:
+            HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          run: |
+            cd src/TheekkathirDataset
+          python3 load_dictionary.py
 
       - name: Delete 30 days parquets in a month
         env:
