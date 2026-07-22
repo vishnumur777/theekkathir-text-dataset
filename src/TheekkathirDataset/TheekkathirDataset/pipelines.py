@@ -7,7 +7,19 @@
 # useful for handling different item types with a single interface
 # from itemadapter import ItemAdapter
 import os
+import re
 import pandas as pd
+
+def clean_text(text):
+    if not isinstance(text, str):
+        return text
+
+    text = text.replace("\xa0", " ")
+    text = text.replace("\\xa0", " ")
+
+    text = re.sub(r"[ \t]+", " ", text)
+
+    return text.strip()
 
 class ArticleSpiderPipeline:
     def __init__(self):
@@ -38,6 +50,16 @@ class ArticleSpiderPipeline:
 
             for index,content in zip(self.index_list,self.content_list):
                 df.loc[index,"உள்ளடக்கம்"] = content
+
+            # Normalize Unicode non-breaking spaces in text fields
+
+            text_columns = [
+                "தலைப்பு",
+                "உள்ளடக்கம்",
+            ]
+            for column in text_columns:
+                if column in df.columns:
+                    df[column] = df[column].apply(clean_text)
 
             # saving parquet files
 
