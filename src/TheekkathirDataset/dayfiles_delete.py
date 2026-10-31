@@ -27,6 +27,13 @@ yesterday_month = yesterday_list[0]
 yesterday_year = yesterday_list[2]
 
 repo_id = "aiwithvarun7/theekkathir-text-dataset"
+merged_path = f"/home/TheekkathirDataset/parquets/outputs/{yesterday_month} - {yesterday_year}.parquet"
+
+if not os.path.isfile(merged_path):
+    # Do not delete the daily files when the monthly merge did not produce a file.
+    print(f"Skipping cleanup: no merged parquet at {merged_path}")
+    raise SystemExit(0)
+
 files = fs.glob(f"datasets/{repo_id}/TheekkathirDataset/parquets/{yesterday_month}*{yesterday_year}*.parquet")
 commit = "Deleted all 30 days files in a month."
 for full_path in files:
@@ -38,7 +45,7 @@ for full_path in files:
 api.upload_file(
     path_in_repo=f"TheekkathirDataset/parquets/{yesterday_month} - {yesterday_year}.parquet",
     repo_id=repo_id,
-    path_or_fileobj=f"/home/TheekkathirDataset/parquets/outputs/{yesterday_month} - {yesterday_year}.parquet",
+    path_or_fileobj=merged_path,
     repo_type="dataset",
     commit_message=f"Upload Parquet for {yesterday_tamildate}"
 )

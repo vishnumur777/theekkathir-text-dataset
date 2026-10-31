@@ -50,12 +50,12 @@ class StatearticlespiderSpider(scrapy.Spider):
         }
         self.page_number = 1
 
-    def start_requests(self):
+    async def start(self):
         url_with_page = f"{self.url}{self.page_number}"
-        yield scrapy.Request(url=url_with_page,callback=self.parse)
+        yield scrapy.Request(url=url_with_page, callback=self.parse)
 
     def handle_error(self, failure):
-        response = failure.value.response
+        response = getattr(failure.value, "response", None)
         if response and response.status == 404:
             self.logger.error(f"Page not found: {response.url}")
             sys.exit(1)
@@ -81,8 +81,8 @@ class StatearticlespiderSpider(scrapy.Spider):
         category_scrape = response.css("article.zm-single-post div.zm-category a.cat-btn")
         author_scrape = response.css("article.zm-single-post div.zm-post-meta a.zm-author")
 
-        dt_convert: datetime
-        yesterday: datetime
+        dt_convert: datetime | None = None
+        yesterday: datetime | None = None
         for titles,dates,category,authors in zip(titles_scrape,dates_scrape,category_scrape,author_scrape):
             dt_now = datetime.now()
             yesterday = dt_now - timedelta(days=1)

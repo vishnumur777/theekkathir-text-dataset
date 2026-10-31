@@ -18,23 +18,30 @@ yesterday = yesterday.replace(hour=0,minute=0,second=0, microsecond=0)
 
 yesterday_tamildate = date_to_tamildate_converter(yesterday)
 
-files_to_upload = [f"/home/TheekkathirDataset/parquets/{yesterday_tamildate}.parquet",f"/home/TheekkathirDataset/texts/{yesterday_tamildate}/"]
+parquet_path = f"/home/TheekkathirDataset/parquets/{yesterday_tamildate}.parquet"
+texts_path = f"/home/TheekkathirDataset/texts/{yesterday_tamildate}/"
 
+if not os.path.isfile(parquet_path):
+    # Happens when the newspaper had no new articles, so there is nothing to upload.
+    print(f"Skipping upload: no parquet file at {parquet_path}")
+    raise SystemExit(0)
 
 api.upload_file(
-    path_or_fileobj=files_to_upload[0],
+    path_or_fileobj=parquet_path,
     path_in_repo=f"TheekkathirDataset/parquets/{yesterday_tamildate}.parquet",
     repo_id="aiwithvarun7/theekkathir-text-dataset",
     commit_message=f"Upload Parquet for {yesterday_tamildate}",
     repo_type="dataset"   
 )
 
-api.upload_folder(
-    folder_path=files_to_upload[1],
-    path_in_repo=f"TheekkathirDataset/texts/{yesterday_tamildate}",
-    repo_id="aiwithvarun7/theekkathir-text-dataset",
-    commit_message=f"Upload Texts for {yesterday_tamildate}",
-    repo_type="dataset"
-)
-
-print(f"Uploaded Parquet and Texts for {yesterday_tamildate}")
+if os.path.isdir(texts_path) and os.listdir(texts_path):
+    api.upload_folder(
+        folder_path=texts_path,
+        path_in_repo=f"TheekkathirDataset/texts/{yesterday_tamildate}",
+        repo_id="aiwithvarun7/theekkathir-text-dataset",
+        commit_message=f"Upload Texts for {yesterday_tamildate}",
+        repo_type="dataset"
+    )
+    print(f"Uploaded Parquet and Texts for {yesterday_tamildate}")
+else:
+    print(f"Uploaded Parquet for {yesterday_tamildate} (no text files found)")

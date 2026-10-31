@@ -13,7 +13,10 @@ def merge_and_save_parquets(local_paths: list[str]) -> None:
         df = pd.read_parquet(path)
         df = df.dropna(subset=["உள்ளடக்கம்"])
         merged_dataframe = pd.concat([merged_dataframe, df])
-        merged_dataframe.sort_values(by="சேகரிக்கப்பட்ட தேதி",inplace=True)
+    merged_dataframe = merged_dataframe.sort_values(by="சேகரிக்கப்பட்ட தேதி")
+    if merged_dataframe.empty:
+        print(f"No rows found in {yesterday_month} {yesterday_year} parquet files, nothing to merge.")
+        return
     merged_dataframe.to_parquet(f"/home/TheekkathirDataset/parquets/outputs/{yesterday_month} - {yesterday_year}.parquet",index=False)
     print(f"{yesterday_month} - {yesterday_year}.parquet saved successfully to /home/TheekkathirDataset/parquets/outputs/")
 
@@ -40,6 +43,10 @@ repo_id = "aiwithvarun7/theekkathir-text-dataset"
 files = fs.glob(f"datasets/{repo_id}/TheekkathirDataset/parquets/{yesterday_month}*{yesterday_year}.parquet")
 
 local_paths = []
+
+if not files:
+    print(f"No daily parquet files found for {yesterday_month} {yesterday_year}, nothing to merge.")
+    raise SystemExit(0)
 
 # download files from repository
 for file in files:

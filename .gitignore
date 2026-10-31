@@ -3,3 +3,7 @@ src/TheekkathirDataset/TheekkathirDataset/article.txt
 src/TheekkathirDataset/TheekkathirDataset/states.json
 src/TheekkathirDataset/TheekkathirDataset/extracted.json
 src/TheekkathirDataset/.env
+opencode.json
+error.log
+__pycache__/
+*.pyc

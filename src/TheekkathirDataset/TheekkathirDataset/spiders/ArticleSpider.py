@@ -1,3 +1,4 @@
+import os
 import re
 import html
 import scrapy
@@ -11,23 +12,44 @@ class ArticlespiderSpider(scrapy.Spider):
     custom_pipeline = True
 
     def __init__(self):
-        self.others = pd.read_json("./TheekkathirDataset/extracted.json")
-        self.dataset = self.others.drop_duplicates(subset="இணைப்பு").reset_index(drop=True)
-        self.urls = list(self.dataset["இணைப்பு"])
+        self.dataset = self._load_dataset()
+        self.urls = self.dataset["இணைப்பு"].tolist() if not self.dataset.empty else []
+        if not self.urls:
+            self.logger.warning(
+                "No article links found in TheekkathirDataset/extracted.json, "
+                "nothing to crawl."
+            )
 
-    def get_index_from_url(self, urls: list, target: str) -> int:
-        for index in range(0, len(urls)):
-            if urls[index] == target:
-                return index
-        return 0
+    @staticmethod
+    def _load_dataset() -> pd.DataFrame:
+        """Load the feed produced by TheekkathirSpider, tolerating an empty feed."""
+        feed_path = "./TheekkathirDataset/extracted.json"
+        if not os.path.exists(feed_path) or os.path.getsize(feed_path) == 0:
+            return pd.DataFrame()
 
-    def start_requests(self):
-        for url in self.urls:
-            index = self.get_index_from_url(self.urls, url)
-            yield scrapy.Request(url=url, callback=self.parse, meta={"index": index}, dont_filter=True)
+        try:
+            others = pd.read_json(feed_path)
+        except ValueError:
+            # pandas raises ValueError for an empty/invalid JSON feed.
+            return pd.DataFrame()
+
+        if others.empty or "இணைப்பு" not in others.columns:
+            return pd.DataFrame()
+
+        return others.drop_duplicates(subset="இணைப்பு").reset_index(drop=True)
+
+    async def start(self):
+        for index, url in enumerate(self.urls):
+            yield scrapy.Request(
+                url=url,
+                callback=self.parse,
+                errback=self.handle_error,
+                meta={"index": index},
+                dont_filter=True,
+            )
 
     def handle_error(self, failure):
-        response = failure.value.response
+        response = getattr(failure.value, "response", None)
         if response and response.status == 404:
             self.logger.error(f"Page not found: {response.url}")
             sys.exit(1)
