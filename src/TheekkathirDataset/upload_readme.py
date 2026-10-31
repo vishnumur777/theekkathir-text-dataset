@@ -12,8 +12,9 @@ readme1_path="READMEs/README1.md"
 readme2_path="READMEs/README2.md"
 log_path="https://huggingface.co/datasets/aiwithvarun7/theekkathir-text-dataset/resolve/main/value.log"
 local_log_path = "/home/TheekkathirDataset/value.log"
-log_value = requests.get(log_path)
-log_value = log_value.text
+os.makedirs(os.path.dirname(local_log_path), exist_ok=True)
+log_value = requests.get(log_path, timeout=60)
+log_value = log_value.text.strip()
 
 if log_value == "1":
     api.upload_file(

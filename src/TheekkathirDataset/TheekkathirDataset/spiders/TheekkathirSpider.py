@@ -37,12 +37,17 @@ class TheekkathirspiderSpider(scrapy.Spider):
         convert_date = date_to_tamildate_converter(yesterday_date)
         return convert_date
 
-    def start_requests(self):
+    async def start(self):
         for url,metadata in self.start_urls_with_metadata.items():
-            yield scrapy.Request(url=url,callback=self.parse,meta=metadata)
+            yield scrapy.Request(
+                url=url,
+                callback=self.parse,
+                errback=self.handle_error,
+                meta=metadata,
+            )
 
     def handle_error(self, failure):
-        response = failure.value.response
+        response = getattr(failure.value, "response", None)
         if response and response.status == 404:
             self.logger.error(f"Page not found: {response.url}")
             sys.exit(1)

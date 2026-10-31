@@ -35,7 +35,7 @@ pyyaml
 queuelib
 requests
 requests-file
-scrapy
+scrapy>=2.13
 service-identity
 setuptools
 six
